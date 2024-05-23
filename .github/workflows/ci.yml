@@ -1,0 +1,54 @@
+name: C++ CI
+
+on: [push]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up C++ environment
+      run: sudo apt-get install g++ make -y
+
+    - name: Build
+      run: g++ -o main main.cpp
+
+    - name: Run tests
+      run: ./main
+
+    - name: Run static analysis
+      run: cppcheck --enable=all --inconclusive --std=c++11 .
+
+    - name: Save build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: ./main
+
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up C++ environment
+      run: choco install mingw
+
+    - name: Build
+      run: g++ -o main.exe main.cpp
+
+    - name: Run tests
+      run: .\main.exe
+
+    - name: Run static analysis
+      run: cppcheck --enable=all --inconclusive --std=c++11 .
+
+    - name: Save build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: ./main.exe
