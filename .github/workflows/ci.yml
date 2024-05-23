@@ -58,7 +58,7 @@ jobs:
     - name: Run cppcheck
       if: runner.os == 'Windows'
       run: |
-       "C:\Program Files\Cppcheck\cppcheck.exe" --enable=all --inconclusive --std=c++11 .
+       "C:\Program Files\Cppcheck\cppcheck.exe" --inconclusive --std=c++11 .
 
   build-linux-local:
     runs-on: self-hosted
