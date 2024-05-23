@@ -38,6 +38,11 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
+    - name: Install cppcheck
+      run: |
+        Invoke-WebRequest -Uri "https://github.com/danmar/cppcheck/releases/download/2.6/cppcheck-2.6-x64-setup.exe" -OutFile cppcheck-setup.exe
+        Start-Process -Wait -FilePath ".\cppcheck-setup.exe" -ArgumentList "/S"
+        Remove-Item -Path ".\cppcheck-setup.exe"
 
     - name: Set up C++ environment
       run: choco install mingw
