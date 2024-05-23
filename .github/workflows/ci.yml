@@ -38,15 +38,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Download and install cppcheck
+    - name: Download cppcheck setup
       if: runner.os == 'Windows'
       run: |
        $url = "https://github.com/danmar/cppcheck/releases/download/2.6/cppcheck-2.6-x64-setup.exe"
        $output = "cppcheck-setup.exe"
-       Invoke-WebRequest -Uri $url -OutFile $output
-       Start-Process -Wait -FilePath $output -ArgumentList "/S"
-       Remove-Item -Path $output
-
+       curl -o $output -L $url
 
 
     - name: Set up C++ environment
