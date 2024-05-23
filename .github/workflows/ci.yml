@@ -8,7 +8,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Install cppcheck
+      run: sudo apt-get install cppcheck
 
     - name: Set up C++ environment
       run: sudo apt-get install g++ make -y
@@ -33,7 +36,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Install cppcheck
+      run: sudo apt-get install cppcheck
 
     - name: Set up C++ environment
       run: choco install mingw
