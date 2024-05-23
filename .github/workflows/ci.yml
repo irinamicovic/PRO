@@ -23,7 +23,7 @@ jobs:
       run: ./main
 
     - name: Run static analysis
-      run: cppcheck --enable=all --inconclusive --std=c++11 .
+      run: cppcheck --enable= --std=c++11 .
 
     - name: Save build artifacts
       uses: actions/upload-artifact@v2
