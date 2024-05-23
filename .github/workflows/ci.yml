@@ -82,10 +82,3 @@ jobs:
       with:
         name: build
         path: ./main
-
-
-    - name: Save build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build
-        path: ./main.exe
