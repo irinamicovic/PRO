@@ -55,8 +55,11 @@ jobs:
     - name: Run tests
       run: .\main.exe
 
-    - name: Run static analysis
-      run: cppcheck --enable=all --inconclusive --std=c++11 .
+    - name: Run cppcheck
+      if: runner.os == 'Windows'
+      run: |
+       choco install cppcheck -y
+       cppcheck --enable=all --inconclusive --std=c++11 .
 
     - name: Save build artifacts
       uses: actions/upload-artifact@v2
