@@ -39,6 +39,7 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install cppcheck
+      if: runner.os == 'Windows'
       run: |
         curl -o cppcheck-setup.exe -L "https://github.com/danmar/cppcheck/releases/download/2.6/cppcheck-2.6-x64-setup.exe"
         Start-Process -Wait -FilePath ".\cppcheck-setup.exe" -ArgumentList "/S"
