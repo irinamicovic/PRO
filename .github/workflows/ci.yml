@@ -58,7 +58,6 @@ jobs:
     - name: Run cppcheck
       if: runner.os == 'Windows'
       run: |
-       choco install cppcheck -y
        "C:\Program Files\Cppcheck\cppcheck.exe" --enable=all --inconclusive --std=c++11 .
 
   build-linux-local:
