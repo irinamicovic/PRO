@@ -67,3 +67,50 @@ jobs:
       with:
         name: build
         path: ./main.exe
+
+    - name: Generate documentation
+      run: doxygen Doxyfile
+        
+    - name: Save documentation artifact
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+          name: documentation
+          path: ./docs
+
+    - name: Package executable
+      run: tar -czf main.tar.gz main
+    - name: Save packaged executable artifact
+      if: success()
+      uses: actions/upload-artifact@v2
+      with:
+          name: packaged-executable
+          path: ./main.tar.gz
+
+  build-linux-local:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install cppcheck
+      run: sudo apt-get install cppcheck
+
+    - name: Set up C++ environment
+      run: sudo apt-get install g++ make -y
+
+    - name: Build
+      run: g++ -o main main.cpp
+
+    - name: Run tests
+      run: ./main
+
+    - name: Run static analysis
+      run: cppcheck --enable=all --inconclusive --std=c++11 .
+
+    - name: Save build artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: ./main
