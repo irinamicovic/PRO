@@ -38,20 +38,6 @@ jobs:
         name: static-analysis-report
         path: cppcheck-report.txt
 
-    - name: Save test results
-      if: always() 
-      uses: actions/upload-artifact@v2
-      with:
-        name: test-results
-        path: ./test_results
-
-    - name: Save coverage report
-      if: always() 
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: ./coverage_report
-
   build-windows:
     runs-on: windows-latest
 
@@ -82,18 +68,30 @@ jobs:
         name: build
         path: ./main.exe
 
-    - name: Save test results
-      if: always() # Čak i ako ne uspe
+  build-linux-local:
+    runs-on: self-hosted
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Install cppcheck
+      run: sudo apt-get install cppcheck
+
+    - name: Set up C++ environment
+      run: sudo apt-get install g++ make -y
+
+    - name: Build
+      run: g++ -o main main.cpp
+
+    - name: Run tests
+      run: ./main
+
+    - name: Run static analysis
+      run: cppcheck --enable=all --inconclusive --std=c++11 .
+
+    - name: Save build artifacts
       uses: actions/upload-artifact@v2
       with:
-        name: test-results
-        path: ./test_results
-
-    - name: Save coverage report
-      if: always() # Čak i ako ne uspe
-      uses: actions/upload-artifact@v2
-      with:
-        name: coverage-report
-        path: ./coverage_report
-
-  
+        name: build
+        path: ./main
