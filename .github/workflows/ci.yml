@@ -25,6 +25,9 @@ jobs:
     - name: Run static analysis
       run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
 
+    - name: Enable debug logging
+      run: echo "::set-env name=ACTIONS_STEP_DEBUG::true"
+
     - name: Save build artifact (binary)
       uses: actions/upload-artifact@v2
       with:
