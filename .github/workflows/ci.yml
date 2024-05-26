@@ -25,11 +25,18 @@ jobs:
     - name: Run static analysis
       run: cppcheck --enable=all --inconclusive --std=c++11 .
 
-    - name: Save build artifacts
+    - name: Save build artifact (binary)
       uses: actions/upload-artifact@v2
       with:
         name: build
         path: ./main
+
+    - name: Save static analysis report
+      run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
+    - uses: actions/upload-artifact@v2
+      with:
+        name: static-analysis-report
+        path: cppcheck-report.txt
 
   build-windows:
     runs-on: windows-latest
@@ -54,6 +61,12 @@ jobs:
 
     - name: Run tests
       run: .\main.exe
+
+    - name: Save build artifact (binary)
+      uses: actions/upload-artifact@v2
+      with:
+        name: build
+        path: ./main.exe
 
   build-linux-local:
     runs-on: self-hosted
