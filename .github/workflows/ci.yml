@@ -11,10 +11,10 @@ jobs:
       uses: actions/checkout@v3
 
     - name: Install cppcheck
-      run: sudo apt-get install cppcheck
+      run: sudo apt-get update && sudo apt-get install -y cppcheck
 
     - name: Set up C++ environment
-      run: sudo apt-get install g++ make -y
+      run: sudo apt-get install -y g++ make
 
     - name: Build
       run: g++ -o main main.cpp
@@ -23,7 +23,7 @@ jobs:
       run: ./main
 
     - name: Run static analysis
-      run: cppcheck --enable=all --inconclusive --std=c++11 .
+      run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
 
     - name: Save build artifact (binary)
       uses: actions/upload-artifact@v2
@@ -32,8 +32,8 @@ jobs:
         path: ./main
 
     - name: Save static analysis report
-      run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
-    - uses: actions/upload-artifact@v2
+      if: success()
+      uses: actions/upload-artifact@v2
       with:
         name: static-analysis-report
         path: cppcheck-report.txt
