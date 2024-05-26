@@ -10,9 +10,6 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Enable debug logging
-      run: echo "ACTIONS_STEP_DEBUG=true" >> $GITHUB_ENV
-
     - name: Install cppcheck
       run: sudo apt-get update && sudo apt-get install -y cppcheck
 
@@ -27,12 +24,6 @@ jobs:
 
     - name: Run static analysis
       run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
-
-    - name: Verify build artifact (binary) exists
-      run: ls -lh ./main
-
-    - name: Verify static analysis report exists
-      run: ls -lh cppcheck-report.txt
 
     - name: Save build artifact (binary)
       uses: actions/upload-artifact@v2
@@ -76,31 +67,3 @@ jobs:
       with:
         name: build
         path: ./main.exe
-
-  build-linux-local:
-    runs-on: self-hosted
-
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Install cppcheck
-      run: sudo apt-get install cppcheck
-
-    - name: Set up C++ environment
-      run: sudo apt-get install g++ make -y
-
-    - name: Build
-      run: g++ -o main main.cpp
-
-    - name: Run tests
-      run: ./main
-
-    - name: Run static analysis
-      run: cppcheck --enable=all --inconclusive --std=c++11 .
-
-    - name: Save build artifacts
-      uses: actions/upload-artifact@v2
-      with:
-        name: build
-        path: ./main
