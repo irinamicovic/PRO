@@ -28,6 +28,12 @@ jobs:
     - name: Run static analysis
       run: cppcheck --enable=all --inconclusive --std=c++11 . > cppcheck-report.txt
 
+    - name: Verify build artifact (binary) exists
+      run: ls -lh ./main
+
+    - name: Verify static analysis report exists
+      run: ls -lh cppcheck-report.txt
+
     - name: Save build artifact (binary)
       uses: actions/upload-artifact@v2
       with:
